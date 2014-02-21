@@ -2,6 +2,8 @@
 #	generic gitignore
 #
 
+sobol.sh
+
 *.class
 *.ser
 *~
@@ -20,6 +22,7 @@
 # temp
 .DS_Store/
 /tmp/
+/var/
 
 # scm
 .svn

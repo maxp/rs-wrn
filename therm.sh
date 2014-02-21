@@ -1,16 +1,24 @@
 #!/bin/sh
 
 # /etc/crontabs/root:
-# */5 *  *  *  *  /www/therm.sh
-#
-# chmod +x /www/therm.sh
+# */5 *   *  *  *  /www/therm.sh
+# 3   */2 *  *  *  /www/watch.sh
+
+# chmod +x /www/*.sh
 # /etc/init.d/cron enable
 
 # rc.local:
 #  sleep 10; /www/therm.sh
 
+# /www/watch.sh:
+
+#!/bin/sh
+#
 # if ! ping -q -c 1 -W 9  "8.8.8.8"  > /dev/null; 
 # then
+#
+#   /sbin/reboot
+#
 #     echo 0 > /sys/devices/virtual/gpio/gpio8/value
 #     sleep 2
 #     echo 1 > /sys/devices/virtual/gpio/gpio8/value
@@ -18,6 +26,9 @@
 #     usb_modeswitch -v 0685 -p 2000
 #     sleep 50
 # fi
+
+# install kmod-ftdi, kmod-pl2303, coreutils-sha1sum
+
 
 psw="secret"
 url='http://example.com/dat?'
@@ -64,23 +75,23 @@ then
         exit 1
 fi
 
-if [[ ${#val} != 8 ]] ;
-then
-        echo "term value format error"
-        exit 2
-fi
-
-h0=`expr substr $val 5 2`
-h1=`expr substr $val 7 2`
-
-val=$((0x${h1}${h0}))
-
-if [ $val -gt 32767 ] ;
-then
-  val=$(($val - 65536))
-fi
-
-val=$(( $val / 2 ))        # / 16
+#if [[ ${#val} != 8 ]] ;
+#then
+#        echo "term value format error"
+#        exit 2
+#fi
+#
+#h0=`expr substr $val 5 2`
+#h1=`expr substr $val 7 2`
+#
+#val=$((0x${h1}${h0}))
+#
+#if [ $val -gt 32767 ] ;
+#then
+#  val=$(($val - 65536))
+#fi
+#
+#val=$(( $val / 2 ))        # / 16
 
 if [ $val -gt -60 -a $val -lt 60 ] ;
 then
@@ -203,7 +214,7 @@ config system
 #         option network  wan
 #         option mode     sta
 #         option encryption psk2
-#         option ssid     "golodnyjnetwork"
+#         option ssid     "mynetwork"
 #         option key      "12345"
 
 if ! ping -q -c 1 -W 10 -I 3g-wan 8.8.8.8 > /dev/null; then
