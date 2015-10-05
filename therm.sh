@@ -39,6 +39,7 @@ wget='wget -q -O - '
 
 
 cycle_file='/tmp/cycle'                                   
+cycle_data='/tmp/cycle.dat'
                                                           
 touch $cycle_file
 cycle=`cat $cycle_file`
@@ -53,27 +54,30 @@ echo "cycle:" $cycle
 
 #
 
-read -t 5 val1 <> $port
-read -t 5 val2 <> $port
-read -t 5 val3 <> $port
+read -t 5 val <> $port
+echo $cycle > $cycle_data
+echo $val  >> $cycle_data
 
-val=""
+#read -t 5 val2 <> $port
+#read -t 5 val3 <> $port
 
-if [ "$val1" == "$val2" ] ;
-then
-        val=$val1
-fi
-
-if [ "$val2" == "$val3" ] ;
-then
-        val=$val2
-fi
-
-if [ "$val" == "" ] ;
-then
-        echo "term read error"
-        exit 1
-fi
+#val=""
+#
+#if [ "$val1" == "$val2" ] ;
+#then
+#        val=$val1
+#fi
+#
+#if [ "$val2" == "$val3" ] ;
+#then
+#        val=$val2
+#fi
+#
+#if [ "$val" == "" ] ;
+#then
+#        echo "term read error"
+#        exit 1
+#fi
 
 #if [[ ${#val} != 8 ]] ;
 #then
@@ -93,23 +97,23 @@ fi
 #
 #val=$(( $val / 2 ))        # / 16
 
-if [ $val -gt -60 -a $val -lt 60 ] ;
-then
-    echo "t:" $val
+#if [ $val -gt -60 -a $val -lt 60 ] ;
+#then
+#    echo "t:" $val
 
-    qs="hwid=${hwid}&cycle=${cycle}&t=${val}"
-    hk=`echo -n "${qs}${psw}" | sha1sum | cut -f 1 -d " "`
+qs="hwid=${hwid}&cycle=${cycle}&t=${val}"
+hk=`echo -n "${qs}${psw}" | sha1sum | cut -f 1 -d " "`
     
-    echo "q:" $qs $hk
+echo "q:" $qs $hk
 
-    qs="${qs}&_hkey=${hk}"
-    rc=`${wget} ${url}${qs}`
+qs="${qs}&_hkey=${hk}"
+rc=`${wget} ${url}${qs}`
 
-    # echo 'rc:' $rc
-else
-    echo "therm value out of range:" ${val}
-    exit 3
-fi
+#    # echo 'rc:' $rc
+#else
+#    echo "therm value out of range:" ${val}
+#    exit 3
+#fi
 
 exit 0
 

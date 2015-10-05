@@ -45,6 +45,7 @@ System / Software:
 update package list
 
 install coreutils-sha1sum
+install kmod-usb-acm
 install kmod-usb-serial-ftdi
 install kmod-usb-serial-pl2303
 
