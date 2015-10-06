@@ -36,11 +36,14 @@ int read_t() {
     return 0;
   }
   
-  int t = ((int)data[1] << 8) + (int)data[0]; t = t*6+t/4;  // *6.25
-
+  int t = ((int)data[1] << 8) + (int)data[0]; 
+  
+  // t = t*6+t/4;  // *6.25
   // Serial.print("t: "); 
-  Serial.println((float)t/100, 2);
-
+  // Serial.println((float)t/100, 2);
+  
+  Serial.print((float)t * 0.0625, 2); Serial.print("\n");
+  
   return 1;
 }
 
@@ -69,3 +72,4 @@ void loop()
 }
 
 //.
+
